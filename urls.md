@@ -8,7 +8,7 @@ This document can be accessed via:
 
 - <https://github.com/kristopherjohnson/Markingbird>
 - <https://github.com/neonichu/Clock>
-- ...
+- <https://github.com/Haneke/HanekeSwift>
 
 ## Working repos
 
