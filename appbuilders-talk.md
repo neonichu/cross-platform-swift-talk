@@ -48,6 +48,12 @@
 
 ---
 
+## Ya tu sabes
+
+![](images/paintings/Manuscript-Alexander-Highsmith.jpeg)
+
+---
+
 ![140%](images/dev-productivity.png)
 
 ---
@@ -724,9 +730,9 @@ get(*) { (_, name: String) in
 ```
 
 ```bash
-$ curl http://0.0.0.0:8000
+$ curl http://localhost:8000
 Hello 🇨🇭
-$ curl http://0.0.0.0:8000/glasses
+$ curl http://localhost:8000/glasses
 😎
 $ curl http://localhost:8000/nerd
 🤓
