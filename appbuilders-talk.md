@@ -353,6 +353,28 @@ print("Running on any platform but OS X and watchOS")
 
 ---
 
+## Can also be used to distinguish versions (SE-0020)
+
+```swift
+#if swift(>=2.2)
+  print("Active!")
+#else
+  this! code! will! not! parse! or! produce! diagnostics!
+#endif
+```
+
+---
+
+## Or to see if your code is being built by swiftpm
+
+```swift
+#if SWIFT_PACKAGE
+import Foundation
+#endif
+```
+
+---
+
 # Shared frameworks
 
 ![inline](images/supported-platforms.png)
@@ -469,6 +491,16 @@ package.targets.append(target)
 ```
 
 ![](images/paintings/bird.jpg)
+
+---
+
+# Current status
+
+- Use swiftpm for OS X and Linux
+- Use CocoaPods for the iOS-ish platforms
+- Use build configurations to distinguish
+
+![](images/paintings/hellmouth.jpg)
 
 ---
 
@@ -609,7 +641,115 @@ script:
 
 ---
 
-# TBD: Putting it all together
+# Practical example
+
+![](images/paintings/theatre.jpg)
+
+---
+
+# Emoji!
+
+### 😀  😁  😂  😃  😄  😅  😆  😉  😊  😋  😎  😍  😘  😗  😙  😚  🙂  🤗  😇  🤔  😐  😑  😶  🙄  😏  😣  😥  😮  🤐  😯  😪  😫  😴  😌  🤓  😛  😜  😝
+
+![](images/paintings/theatre.jpg)
+
+---
+
+# electronic-moji
+
+```swift
+import Foundation
+import Regex
+
+extension Character {
+  public var unicodeName: String {
+    let mutableString = NSMutableString(string: "\(self)")
+    CFStringTransform(mutableString, nil, kCFStringTransformToUnicodeName, false)
+    let unicodeName = "\(mutableString)".lowercaseString
+    let regex = Regex(".*\\{(.*)\\}")
+    return regex.match(unicodeName)?.captures.first.flatMap { $0 } ?? unicodeName
+  }
+}
+
+extension CollectionType where Generator.Element == Character {
+  public func findUnicodeName(term: String) -> [Character] {
+    let regex = Regex(".*\(term).*")
+    return self.filter { regex.matches($0.unicodeName) }
+  }
+}
+```
+
+---
+
+# Frank
+
+Frank is a DSL for quickly writing web applications in Swift with type-safe path routing.
+
+<https://github.com/nestproject/Frank>
+
+![](images/frank.jpg)
+
+---
+
+```swift
+import Emoji
+import Frank
+
+get { _ in
+  return "Hello 🇨🇭\n"
+}
+
+get(*) { (_, name: String) in
+  return (EMOJI.findUnicodeName(name)
+    .map { "\($0)" }
+    .first ?? "¯\\_(ツ)_/¯") + "\n"
+}
+```
+
+---
+
+# Demo
+
+![](images/paintings/theatre.jpg)
+
+---
+
+```bash
+.build/debug/example
+[2016-04-26 10:21:09 +0200] [65201] [INFO] Listening at http://0.0.0.0:8000 (65201)
+[2016-04-26 10:21:09 +0200] [65202] [INFO] Booting worker process with pid: 65202
+[worker] GET / - 200 OK
+[worker] GET /glasses - 200 OK
+[worker] GET /nerd - 200 OK
+```
+
+```bash
+$ curl http://0.0.0.0:8000
+Hello 🇨🇭
+$ curl http://0.0.0.0:8000/glasses
+😎
+$ curl http://localhost:8000/nerd
+🤓
+```
+
+---
+
+# emoji search keyboard
+
+![150%](images/keyboard.png)
+
+<https://github.com/neonichu/emoji-search-keyboard>
+
+---
+
+# CLI tool
+
+```bash
+$ electronic-moji bird
+🐦
+```
+
+![](images/paintings/theatre.jpg)
 
 ---
 
@@ -632,12 +772,11 @@ script:
 # References
 
 - <https://swift.org>
-- <https://github.com/apple/swift-package-manager>
-- <https://github.com/apple/llbuild>
-- <https://github.com/neonichu/chocolat>
 - <https://github.com/neonichu/freedom>
 - <https://github.com/kylef/swiftenv>
+- <https://github.com/nestproject/Frank>
 - <https://speakerdeck.com/jpsim/practical-cross-platform-swift>
+- <https://speakerdeck.com/kylef/end-to-end-building-a-web-service-in-swift-mce-2016>
 
 ![](images/paintings/Lorenzetti_amb.effect2.jpg)
 
