@@ -2,7 +2,7 @@ import Emoji
 import Frank
 
 get { _ in
-  return "Hello 🇨🇭\n"
+  return "Hello 🌉\n"
 }
 
 get(*) { (_, name: String) in
@@ -10,4 +10,3 @@ get(*) { (_, name: String) in
     .map { "\($0)" }
     .first ?? "¯\\_(ツ)_/¯") + "\n"
 }
-
